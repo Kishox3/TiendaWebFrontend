@@ -9,11 +9,17 @@
 <body class="bg-light">
   <div class="container py-5">
     <h1 class="text-center mb-4">Tienda de Ropa</h1>
+    <nav class="nav nav-pills mb-4 justify-content-center">
+        <a class="nav-link active" href="#" onclick="cargarSeccion('usuarios')">Usuarios</a>
+        <a class="nav-link" href="#" onclick="cargarSeccion('marcas')">Marcas</a>
+        <a class="nav-link" href="#" onclick="cargarSeccion('prendas')">Prendas</a>
+        <a class="nav-link" href="#" onclick="cargarSeccion('ventas')">Ventas</a>
+        <a class="nav-link" href="#" onclick="cargarSeccion('reportes')">Reportes</a>
+    </nav>
     <div id="contenido-principal">
       <!-- Aquí cargaremos el CRUD de cada entidad -->
     </div>
   </div>
-
   <script src="js/main.js"></script>
 </body>
 </html>
