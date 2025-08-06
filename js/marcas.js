@@ -1,40 +1,32 @@
 export function renderizar() {
-  fetch("http://localhost:5000/tienda/api/v1/usuarios")
+  fetch("http://localhost:5000/tienda/api/v1/marcas")
     .then(res => res.json())
     .then(data => {
       let html = `
-        <h2 class="mb-4">👥 Usuarios</h2>
-        <form id="form-usuario" class="row g-3 mb-4">
-          <div class="col-md-4">
-            <input required name="username" class="form-control" placeholder="Nombre de usuario">
+        <h2 class="mb-4">🏷️ Marcas</h2>
+        <form id="form-marca" class="row g-3 mb-4">
+          <div class="col-md-5">
+            <input required name="nombre" class="form-control" placeholder="Nombre de la marca">
           </div>
-          <div class="col-md-4">
-            <input required name="email" type="email" class="form-control" placeholder="Email">
+          <div class="col-md-5">
+            <input required name="pais" class="form-control" placeholder="País de origen">
           </div>
-          <div class="col-md-3">
-            <select required name="rol" class="form-select">
-              <option value="">Rol...</option>
-              <option value="admin">Admin</option>
-              <option value="cliente">Cliente</option>
-            </select>
-          </div>
-          <div class="col-md-1 d-grid">
+          <div class="col-md-2 d-grid">
             <button class="btn btn-success" type="submit">Agregar</button>
           </div>
         </form>
         <table class="table table-bordered table-striped">
-          <thead><tr><th>Username</th><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Nombre</th><th>País</th><th>Acciones</th></tr></thead>
           <tbody>
       `;
-      data.forEach(u => {
+      data.forEach(m => {
         html += `
           <tr>
-            <td>${u.username}</td>
-            <td>${u.email}</td>
-            <td>${u.rol}</td>
+            <td>${m.nombre}</td>
+            <td>${m.pais}</td>
             <td>
-              <button class="btn btn-sm btn-warning me-1" onclick="editarUsuario('${u._id}', '${u.username}', '${u.email}', '${u.rol}')">Editar</button>
-              <button class="btn btn-sm btn-danger" onclick="eliminarUsuario('${u._id}')">Eliminar</button>
+              <button class="btn btn-sm btn-warning me-1" onclick="editarMarca('${m._id}', '${m.nombre}', '${m.pais}')">Editar</button>
+              <button class="btn btn-sm btn-danger" onclick="eliminarMarca('${m._id}')">Eliminar</button>
             </td>
           </tr>
         `;
@@ -43,12 +35,12 @@ export function renderizar() {
 
       document.getElementById("contenido-principal").innerHTML = html;
 
-      // Manejar submit del formulario (crear)
-      document.getElementById("form-usuario").onsubmit = function(e) {
+      // Manejar submit del formulario
+      document.getElementById("form-marca").onsubmit = function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
-        fetch("http://localhost:5000/tienda/api/v1/usuarios", {
+        fetch("http://localhost:5000/tienda/api/v1/marcas", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(data)
@@ -58,35 +50,33 @@ export function renderizar() {
       };
     })
     .catch(err => {
-      console.error("Error al obtener usuarios", err);
+      console.error("Error al obtener marcas", err);
       document.getElementById("contenido-principal").innerHTML = `
-        <p class="alert alert-danger">Error al cargar usuarios</p>
+        <p class="alert alert-danger">Error al cargar marcas</p>
       `;
     });
 }
 
-// Eliminar usuario (debe ser global para que el botón lo encuentre)
-window.eliminarUsuario = function(id) {
-  if (confirm("¿Seguro que deseas eliminar este usuario?")) {
-    fetch(`http://localhost:5000/tienda/api/v1/usuarios/${id}`, {
+// Eliminar marca (debe ser global)
+window.eliminarMarca = function(id) {
+  if (confirm("¿Seguro que deseas eliminar esta marca?")) {
+    fetch(`http://localhost:5000/tienda/api/v1/marcas/${id}`, {
       method: "DELETE"
     })
     .then(() => renderizar());
   }
 };
 
-// Editar usuario (abre prompt simple)
-window.editarUsuario = function(id, username, email, rol) {
-  const nuevoUsername = prompt("Nuevo nombre de usuario:", username);
-  if (!nuevoUsername) return;
-  const nuevoEmail = prompt("Nuevo email:", email);
-  if (!nuevoEmail) return;
-  const nuevoRol = prompt("Nuevo rol (admin/cliente):", rol);
-  if (!nuevoRol) return;
-  fetch(`http://localhost:5000/tienda/api/v1/usuarios/${id}`, {
+// Editar marca (prompt simple)
+window.editarMarca = function(id, nombre, pais) {
+  const nuevoNombre = prompt("Nuevo nombre de la marca:", nombre);
+  if (!nuevoNombre) return;
+  const nuevoPais = prompt("Nuevo país de origen:", pais);
+  if (!nuevoPais) return;
+  fetch(`http://localhost:5000/tienda/api/v1/marcas/${id}`, {
     method: "PUT",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ username: nuevoUsername, email: nuevoEmail, rol: nuevoRol })
+    body: JSON.stringify({ nombre: nuevoNombre, pais: nuevoPais })
   })
   .then(() => renderizar());
 };

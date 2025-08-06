@@ -50,16 +50,23 @@ export function renderizar() {
 
         // Manejar submit del formulario
         document.getElementById("form-venta").onsubmit = function(e) {
-          e.preventDefault();
-          const formData = new FormData(this);
-          const data = Object.fromEntries(formData.entries());
-          fetch("http://localhost:5000/tienda/api/v1/ventas", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-          })
-          .then(r => r.json())
-          .then(() => renderizar());
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            fetch("http://localhost:5000/tienda/api/v1/ventas", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            })
+            .then(async r => {
+                if (!r.ok) {
+                const err = await r.json();
+                alert(err.error || "Error al registrar la venta");
+                return;
+                }
+                return r.json();
+            })
+            .then(() => renderizar());
         };
       })
       .catch(err => {
