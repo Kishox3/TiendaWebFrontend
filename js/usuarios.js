@@ -33,6 +33,7 @@ export function renderizar() {
             <td>${u.email}</td>
             <td>${u.rol}</td>
             <td>
+              <button class="btn btn-sm btn-warning me-1" onclick="editarUsuario('${u._id}', '${u.username}', '${u.email}', '${u.rol}')">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarUsuario('${u._id}')">Eliminar</button>
             </td>
           </tr>
@@ -42,7 +43,7 @@ export function renderizar() {
 
       document.getElementById("contenido-principal").innerHTML = html;
 
-      // Manejar submit del formulario
+      // Manejar submit del formulario (crear)
       document.getElementById("form-usuario").onsubmit = function(e) {
         e.preventDefault();
         const formData = new FormData(this);
@@ -72,4 +73,20 @@ window.eliminarUsuario = function(id) {
     })
     .then(() => renderizar());
   }
+};
+
+// Editar usuario (abre prompt simple)
+window.editarUsuario = function(id, username, email, rol) {
+  const nuevoUsername = prompt("Nuevo nombre de usuario:", username);
+  if (!nuevoUsername) return;
+  const nuevoEmail = prompt("Nuevo email:", email);
+  if (!nuevoEmail) return;
+  const nuevoRol = prompt("Nuevo rol (admin/cliente):", rol);
+  if (!nuevoRol) return;
+  fetch(`http://localhost:5000/tienda/api/v1/usuarios/${id}`, {
+    method: "PUT",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ username: nuevoUsername, email: nuevoEmail, rol: nuevoRol })
+  })
+  .then(() => renderizar());
 };

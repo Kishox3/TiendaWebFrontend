@@ -40,6 +40,7 @@ export function renderizar() {
                 <td>${p.precio}</td>
                 <td>${p.cantidad_stock}</td>
                 <td>
+                  <button class="btn btn-sm btn-warning me-1" onclick="editarPrenda('${p._id}', '${p.nombre}', '${p.marca?._id}', '${p.precio}', '${p.cantidad_stock}')">Editar</button>
                   <button class="btn btn-sm btn-danger" onclick="eliminarPrenda('${p._id}')">Eliminar</button>
                 </td>
               </tr>
@@ -80,4 +81,33 @@ window.eliminarPrenda = function(id) {
     })
     .then(() => renderizar());
   }
+};
+
+// Editar prenda (prompt simple)
+window.editarPrenda = function(id, nombre, marcaId, precio, cantidad_stock) {
+  const nuevoNombre = prompt("Nuevo nombre de la prenda:", nombre);
+  if (!nuevoNombre) return;
+  const nuevoPrecio = prompt("Nuevo precio:", precio);
+  if (!nuevoPrecio) return;
+  const nuevoStock = prompt("Nuevo stock:", cantidad_stock);
+  if (!nuevoStock) return;
+  // Marca: selecciona de nuevo (simple)
+  fetch("http://localhost:5000/tienda/api/v1/marcas")
+    .then(res => res.json())
+    .then(marcas => {
+      const opciones = marcas.map(m => `${m._id}:${m.nombre}`).join('\n');
+      const nuevaMarcaId = prompt(`ID de la nueva marca:\n${opciones}`, marcaId);
+      if (!nuevaMarcaId) return;
+      fetch(`http://localhost:5000/tienda/api/v1/prendas/${id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          nombre: nuevoNombre,
+          marca: nuevaMarcaId,
+          precio: nuevoPrecio,
+          cantidad_stock: nuevoStock
+        })
+      })
+      .then(() => renderizar());
+    });
 };
