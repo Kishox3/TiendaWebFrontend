@@ -1,5 +1,5 @@
 export function renderizar() {
-  fetch("${API_BASE_URL}/usuarios")
+  fetch(`${API_BASE_URL}/usuarios`)
     .then(res => res.json())
     .then(data => {
       let html = `

@@ -1,3 +1,6 @@
+const API_BASE_URL = "http://tienda-backend:5000/tienda/api/v1";
+
+
 function cargarSeccion(seccion) {
   document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
   const activo = Array.from(document.querySelectorAll('.nav-link')).find(link => link.textContent.toLowerCase().includes(seccion));

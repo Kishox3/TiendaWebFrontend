@@ -1,9 +1,9 @@
 export function renderizar() {
   // Primero obtenemos las marcas para el select
-  fetch("${API_BASE_URL}/marcas")
+  fetch(`${API_BASE_URL}/marcas`)
     .then(res => res.json())
     .then(marcas => {
-      fetch("${API_BASE_URL}/prendas")
+      fetch(`${API_BASE_URL}/prendas`)
         .then(res => res.json())
         .then(data => {
           let html = `
@@ -92,7 +92,7 @@ window.editarPrenda = function(id, nombre, marcaId, precio, cantidad_stock) {
   const nuevoStock = prompt("Nuevo stock:", cantidad_stock);
   if (!nuevoStock) return;
   // Marca: selecciona de nuevo (simple)
-  fetch("${API_BASE_URL}/marcas")
+  fetch(`${API_BASE_URL}/marcas`)
     .then(res => res.json())
     .then(marcas => {
       const opciones = marcas.map(m => `${m._id}:${m.nombre}`).join('\n');

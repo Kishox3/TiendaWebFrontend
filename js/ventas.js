@@ -1,8 +1,8 @@
 export function renderizar() {
   // Obtener prendas y usuarios para los selects
   Promise.all([
-    fetch("${API_BASE_URL}/prendas").then(r => r.json()),
-    fetch("${API_BASE_URL}/usuarios").then(r => r.json())
+    fetch(`${API_BASE_URL}/prendas`).then(r => r.json()),
+    fetch(`${API_BASE_URL}/usuarios`).then(r => r.json())
   ]).then(([prendas, usuarios]) => {
     fetch("${API_BASE_URL}/ventas")
       .then(res => res.json())
