@@ -4,7 +4,7 @@ export function renderizar() {
     fetch(`${API_BASE_URL}/prendas`).then(r => r.json()),
     fetch(`${API_BASE_URL}/usuarios`).then(r => r.json())
   ]).then(([prendas, usuarios]) => {
-    fetch("${API_BASE_URL}/ventas")
+    fetch(`${API_BASE_URL}/ventas`))
       .then(res => res.json())
       .then(data => {
         let html = `
@@ -53,7 +53,7 @@ export function renderizar() {
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            fetch("${API_BASE_URL}/ventas", {
+            fetch(`${API_BASE_URL}/ventas`), {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(data)

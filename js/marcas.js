@@ -40,7 +40,7 @@ export function renderizar() {
         e.preventDefault();
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
-        fetch("${API_BASE_URL}/marcas", {
+        fetch(`${API_BASE_URL}/marcas`), {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(data)
