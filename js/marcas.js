@@ -1,5 +1,5 @@
 export function renderizar() {
-  fetch("http://localhost:5000/tienda/api/v1/marcas")
+  fetch("${API_BASE_URL}/marcas")
     .then(res => res.json())
     .then(data => {
       let html = `
@@ -40,7 +40,7 @@ export function renderizar() {
         e.preventDefault();
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
-        fetch("http://localhost:5000/tienda/api/v1/marcas", {
+        fetch("${API_BASE_URL}/marcas", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(data)
@@ -60,7 +60,7 @@ export function renderizar() {
 // Eliminar marca (debe ser global)
 window.eliminarMarca = function(id) {
   if (confirm("¿Seguro que deseas eliminar esta marca?")) {
-    fetch(`http://localhost:5000/tienda/api/v1/marcas/${id}`, {
+    fetch(`${API_BASE_URL}/marcas/${id}`, {
       method: "DELETE"
     })
     .then(() => renderizar());
@@ -73,7 +73,7 @@ window.editarMarca = function(id, nombre, pais) {
   if (!nuevoNombre) return;
   const nuevoPais = prompt("Nuevo país de origen:", pais);
   if (!nuevoPais) return;
-  fetch(`http://localhost:5000/tienda/api/v1/marcas/${id}`, {
+  fetch(`${API_BASE_URL}/marcas/${id}`, {
     method: "PUT",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({ nombre: nuevoNombre, pais: nuevoPais })

@@ -18,7 +18,7 @@ export function renderizar() {
     </div>
   `;
 
-  fetch("http://localhost:5000/tienda/api/v1/reportes/marcas-con-ventas")
+  fetch("${API_BASE_URL}/reportes/marcas-con-ventas")
     .then(r => r.json())
     .then(data => {
       const ul = document.getElementById("reporte-marcas");
@@ -27,7 +27,7 @@ export function renderizar() {
       });
     });
 
-  fetch("http://localhost:5000/tienda/api/v1/reportes/prendas-stock")
+  fetch("${API_BASE_URL}/reportes/prendas-stock")
     .then(r => r.json())
     .then(data => {
       const ul = document.getElementById("reporte-stock");
@@ -36,7 +36,7 @@ export function renderizar() {
       });
     });
 
-  fetch("http://localhost:5000/tienda/api/v1/reportes/top5-marcas")
+  fetch("${API_BASE_URL}/reportes/top5-marcas")
     .then(r => r.json())
     .then(data => {
       const ul = document.getElementById("reporte-top5");

@@ -1,9 +1,9 @@
 export function renderizar() {
   // Primero obtenemos las marcas para el select
-  fetch("http://localhost:5000/tienda/api/v1/marcas")
+  fetch("${API_BASE_URL}/marcas")
     .then(res => res.json())
     .then(marcas => {
-      fetch("http://localhost:5000/tienda/api/v1/prendas")
+      fetch("${API_BASE_URL}/prendas")
         .then(res => res.json())
         .then(data => {
           let html = `
@@ -55,7 +55,7 @@ export function renderizar() {
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            fetch("http://localhost:5000/tienda/api/v1/prendas", {
+            fetch("${API_BASE_URL}/prendas", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(data)
@@ -76,7 +76,7 @@ export function renderizar() {
 // Eliminar prenda (debe ser global)
 window.eliminarPrenda = function(id) {
   if (confirm("¿Seguro que deseas eliminar esta prenda?")) {
-    fetch(`http://localhost:5000/tienda/api/v1/prendas/${id}`, {
+    fetch(`${API_BASE_URL}/prendas/${id}`, {
       method: "DELETE"
     })
     .then(() => renderizar());
@@ -92,13 +92,13 @@ window.editarPrenda = function(id, nombre, marcaId, precio, cantidad_stock) {
   const nuevoStock = prompt("Nuevo stock:", cantidad_stock);
   if (!nuevoStock) return;
   // Marca: selecciona de nuevo (simple)
-  fetch("http://localhost:5000/tienda/api/v1/marcas")
+  fetch("${API_BASE_URL}/marcas")
     .then(res => res.json())
     .then(marcas => {
       const opciones = marcas.map(m => `${m._id}:${m.nombre}`).join('\n');
       const nuevaMarcaId = prompt(`ID de la nueva marca:\n${opciones}`, marcaId);
       if (!nuevaMarcaId) return;
-      fetch(`http://localhost:5000/tienda/api/v1/prendas/${id}`, {
+      fetch(`${API_BASE_URL}/prendas/${id}`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({

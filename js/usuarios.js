@@ -1,5 +1,5 @@
 export function renderizar() {
-  fetch("http://localhost:5000/tienda/api/v1/usuarios")
+  fetch("${API_BASE_URL}/usuarios")
     .then(res => res.json())
     .then(data => {
       let html = `
@@ -48,7 +48,7 @@ export function renderizar() {
         e.preventDefault();
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
-        fetch("http://localhost:5000/tienda/api/v1/usuarios", {
+        fetch("${API_BASE_URL}/usuarios", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(data)
@@ -68,7 +68,7 @@ export function renderizar() {
 // Eliminar usuario (debe ser global para que el botón lo encuentre)
 window.eliminarUsuario = function(id) {
   if (confirm("¿Seguro que deseas eliminar este usuario?")) {
-    fetch(`http://localhost:5000/tienda/api/v1/usuarios/${id}`, {
+    fetch(`${API_BASE_URL}/usuarios/${id}`, {
       method: "DELETE"
     })
     .then(() => renderizar());
@@ -83,7 +83,7 @@ window.editarUsuario = function(id, username, email, rol) {
   if (!nuevoEmail) return;
   const nuevoRol = prompt("Nuevo rol (admin/cliente):", rol);
   if (!nuevoRol) return;
-  fetch(`http://localhost:5000/tienda/api/v1/usuarios/${id}`, {
+  fetch(`${API_BASE_URL}/usuarios/${id}`, {
     method: "PUT",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({ username: nuevoUsername, email: nuevoEmail, rol: nuevoRol })

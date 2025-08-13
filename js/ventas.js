@@ -1,10 +1,10 @@
 export function renderizar() {
   // Obtener prendas y usuarios para los selects
   Promise.all([
-    fetch("http://localhost:5000/tienda/api/v1/prendas").then(r => r.json()),
-    fetch("http://localhost:5000/tienda/api/v1/usuarios").then(r => r.json())
+    fetch("${API_BASE_URL}/prendas").then(r => r.json()),
+    fetch("${API_BASE_URL}/usuarios").then(r => r.json())
   ]).then(([prendas, usuarios]) => {
-    fetch("http://localhost:5000/tienda/api/v1/ventas")
+    fetch("${API_BASE_URL}/ventas")
       .then(res => res.json())
       .then(data => {
         let html = `
@@ -53,7 +53,7 @@ export function renderizar() {
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            fetch("http://localhost:5000/tienda/api/v1/ventas", {
+            fetch("${API_BASE_URL}/ventas", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(data)
@@ -81,7 +81,7 @@ export function renderizar() {
 // Eliminar venta (debe ser global)
 window.eliminarVenta = function(id) {
   if (confirm("¿Seguro que deseas eliminar esta venta?")) {
-    fetch(`http://localhost:5000/tienda/api/v1/ventas/${id}`, {
+    fetch(`${API_BASE_URL}/ventas/${id}`, {
       method: "DELETE"
     })
     .then(() => renderizar());
